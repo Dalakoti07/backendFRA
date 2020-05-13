@@ -11,9 +11,9 @@ const profile=require('./controllers/profile');
 const db = knex({
   client: 'pg',
   connection: {
-    host : '127.0.0.1',
-    user : 'aneagoie',
-    password : '',
+    host : 'localhost',
+    user : 'dalakoti',
+    password : 'password',
     database : 'smart-brain'
   }
 });
@@ -24,19 +24,22 @@ app.use(cors())
 app.use(bodyParser.json());
 
 app.get('/', (req, res)=> {
-  res.send(database.users);
+  res.send(db.select('*').from('users'));
 })
 
 app.post('/signin', (req,res)=>{signin.handleSignin(req,res,db,bcrypt)});
 
-app.post('/register',(req,res)=>{register.handleRegister(req,res,db,bcrypt)})// passing db and bcrypt is known as dependency injection
+app.post('/register',(req,res)=>{
+  register.handleRegister(req,res,db,bcrypt)
+})
 
 app.get('/profile/:id', (req,res)=>{profile.handleProfileGet(req,res,db)})
 
 app.put('/image',(req,res)=>{image.handleImage(req,res,db)})
 
-app.put('/imageurl',(req,res)=>{image.handleApiCall(req,res)})
+app.post('/imageUrl',(req,res)=>{image.handleApiCall(req,res)})
 
-app.listen(3000, ()=> {
-  console.log('app is running on port 3000');
+const PORT =process.env.PORT
+app.listen(PORT, ()=> {
+  console.log(`app is running on port ${PORT}`);
 })
