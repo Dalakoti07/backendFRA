@@ -5,7 +5,10 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "new-mig": "npx knex migrate:make init --migrations-directory db/migrations",
+    "apply-mig": "npx knex migrate:latest --knexfile db/local_db.js",
+    "undo-mig": "knex migrate:down --knexfile db/local_db.js"
   },
   "keywords": [],
   "author": "",
